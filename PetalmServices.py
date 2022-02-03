@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
             return wording[0:spacing]
         padding = spacing-max_len
         for i in range(0, padding):
-            wording = wording+"0"
+            wording = wording+"*"
         return str(wording)
 
     def get_data(self):
@@ -148,10 +148,12 @@ class Ui_MainWindow(object):
             path = self.paths
             wb = load_workbook(path)
             ws = wb.active
-            cols = [x for x in range(2, int(ws.max_column)-3)]
+            cols = [x for x in range(2, int(ws.max_column)-2)]
+            
             with open('Nac Reports/'+title+'.f16','a', encoding = 'utf-8') as f:
                 f.write('HDR20211231                    000200011098NATIONAL AIDS COUNCIL                   202201260112120100                                                                                                                                                                                                                                                                                                                                                                ')
-                for x in (range(2,ws.max_row)):    
+                for x in (range(2,ws.max_row)):
+                    
                     f.write('\n')
                     f.write(self.process('TAX',9))
                     for i in cols:
@@ -163,6 +165,7 @@ class Ui_MainWindow(object):
                         else:
                             valueA = str(ws.cell(row=x, column=i).value).replace('.', '')
                             value = valueA.replace(' ', '')
+                            #count = count+str(value).replace('-', '') 
                             f.writelines(self.fix(str(value).replace('-', '')))
                 f.write('\n')
                 f.write('TRL000394000044353818552000012727355693')
